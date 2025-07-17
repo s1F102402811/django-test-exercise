@@ -146,3 +146,38 @@ class TodoViewTestCase(TestCase):
         response = client.post('/999/like')
 
         self.assertEqual(response.status_code, 404)
+    
+    def test_delete_post_success(self):
+        task = Task(title='task1', due_at=timezone.make_aware(datetime(2024, 7, 1)))
+        task.save()
+        client = Client()
+        response = client.post('/{}/delete'.format(task.pk))
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/')
+        self.assertFalse(Task.objects.filter(pk=task.pk).exists())
+    
+    def test_delete_post_fail(self):
+        client = Client()
+        response = client.post('/1/delete')
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_delete_one_task_among_multiple(self):
+        task1 = Task(title='task1', due_at=timezone.make_aware(datetime(2024, 7, 1)))
+        task1.save()
+        task2 = Task(title='task2', due_at=timezone.make_aware(datetime(2024, 8, 1)))
+        task2.save()
+        task3 = Task(title='task3', due_at=timezone.make_aware(datetime(2024, 9, 1)))
+        task3.save()
+        
+        self.assertEqual(Task.objects.count(), 3)
+        
+        client = Client()
+        response = client.post('/{}/delete'.format(task2.pk))
+        
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Task.objects.count(), 2)  # 1つ減っている
+        self.assertFalse(Task.objects.filter(pk=task2.pk).exists())  # task2が削除されている
+        self.assertTrue(Task.objects.filter(pk=task1.pk).exists())   # task1は残っている
+        self.assertTrue(Task.objects.filter(pk=task3.pk).exists())   # task3は残っている
