@@ -9,7 +9,7 @@ from todo.models import Task
 
 def index(request):
     if request.method == 'POST':
-        task = Task(title=request.POST['title'], due_at=make_aware(parse_datetime(request.POST['due_at'])))
+        task = Task(title=request.POST['title'], due_at=make_aware(parse_datetime(request.POST['due_at'])),favorite=0)
         task.save()
 
     if request.GET.get('order') == 'due':
@@ -64,5 +64,14 @@ def close(request, task_id):
     except Task.DoesNotExist:
         raise Http404("Task does not exist")
     task.completed = True
+    task.save()
+    return redirect(index)
+
+def like(request, task_id):
+    try:
+        task = Task.objects.get(pk=task_id)
+    except Task.DoesNotExist:
+        raise Http404("Task does not exist")
+    task.favorite += 1
     task.save()
     return redirect(index)
