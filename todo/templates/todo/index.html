@@ -34,6 +34,7 @@
     <div>
       <a href="{% url 'index' %}?order=due">Sort by Due Date</a> |
       <a href="{% url 'index' %}?order=post">Sort by Posted Date</a>
+      <a href="{% url 'index' %}?order=favorite">Sort by Likes</a>
     </div>
 
     {% for task in tasks %}
@@ -57,7 +58,7 @@
       style="display: inline"
     >
       {% csrf_token %}
-      <button type="submit">👍 Like</button>
+      <button type="submit">Like</button>
     </form>
     {% endfor %}
   </body>

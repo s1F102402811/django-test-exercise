@@ -14,6 +14,8 @@ def index(request):
 
     if request.GET.get('order') == 'due':
         tasks = Task.objects.order_by('due_at')
+    elif request.GET.get('order') == 'favorite':
+        tasks = Task.objects.order_by('-favorite')
     else:
         tasks = Task.objects.order_by('-posted_at')
 
