@@ -1,21 +1,20 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ja">
-
   <head>
     <title>To Do Application</title>
-    <meta charset="UTF-8">
-    <meta name="author" content="INIAD">
+    <meta charset="UTF-8" />
+    <meta name="author" content="INIAD" />
   </head>
 
   <body>
     <h1>{{ task.title }}</h1>
     <ul>
       <li>Posted at: {{ task.posted_at }}</li>
+      <li>{{ task.favorite }} likes</li>
       {% if task.due_at %}
       <li>Due at: {{ task.due_at }}</li>
-      {% endif %}
-      {% if task.completed %}
+      {% endif %} {% if task.completed %}
       <li>Status: Completed</li>
       {% else %}
       <li>Status: Not Completed</li>
@@ -23,11 +22,10 @@
     </ul>
 
     <div>
-    <a href="{% url 'index' %}">Top</a>
-    |  <a href="{% url 'update' task.id %}">Edit</a>
-    |  <a href="{% url 'delete' task.id %}">Delete</a>
-    |  <a href="{% url 'close' task.id %}">Close</a>
+      <a href="{% url 'index' %}">Top</a>
+      | <a href="{% url 'update' task.id %}">Edit</a> |
+      <a href="{% url 'delete' task.id %}">Delete</a> |
+      <a href="{% url 'close' task.id %}">Close</a>
     </div>
   </body>
-
 </html>
