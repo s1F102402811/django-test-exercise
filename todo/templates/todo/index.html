@@ -10,6 +10,7 @@
 
   <body>
     <h1>Sample To Do Application</h1>
+    <a href="https://moocs.iniad.org/courses"><img src="../img/INIAD_icon.jpg" alt="moocsへのURL" width="45" height="45"></a>
     <p>You can submit tasks from the following form.</p>
     <form action="{% url 'index' %}" method="post">
       {% csrf_token %}
